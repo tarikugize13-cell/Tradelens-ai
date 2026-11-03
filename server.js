@@ -79,10 +79,19 @@ async function gemini(contents, maxOutputTokens = 1500, systemInstruction) {
   }
 
   const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "x-goog-api-key": apiKey,
-      "Content-Type": "application/json"
+  method: "POST",
+  headers: {
+    "x-goog-api-key": apiKey,
+    "Content-Type": "application/json"
   },
   body: JSON.stringify(payload)
 });
+
+const data = await response.json();
+
+if (!response.ok) {
+  throw new Error(data.error?.message || "Gemini API request failed");
+}
+
+return data;
+}
