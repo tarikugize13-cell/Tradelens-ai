@@ -5,7 +5,7 @@ const rateLimit = require("express-rate-limit");
 const multer = require("multer");
 const path = require("path");
 
-const app = express();
+const app = express();app.set("trust proxy", 1);
 
 const upload = multer({
   storage: multer.memoryStorage(),
