@@ -94,4 +94,143 @@ if (!response.ok) {
 }
 
 return data;
-}
+}// AI STATUS
+app.get("/api/status", (req, res) => {
+  res.json({
+    aiReady: Boolean(process.env.GEMINI_API_KEY),
+    aiProvider: "Gemini",
+    marketDataReady: Boolean(process.env.TWELVE_DATA_API_KEY),
+    strategies: STRATEGIES
+  });
+});
+
+// CHART ANALYSIS
+app.post("/api/analyze", upload.array("charts", 4), async (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        error: "Please upload at least one chart image."
+      });
+    }
+
+    const question = req.body.question ||
+      "Analyze this forex chart using technical analysis, SMC and ICT concepts.";
+
+    const parts = [
+      {
+        text: `
+You are TradeLens AI, a professional forex chart analysis assistant.
+
+Analyze the uploaded chart carefully.
+
+User question: ${question}
+
+Use these strategies where relevant:
+${STRATEGIES.join(", ")}
+
+Give your answer in this format:
+
+1. MARKET DIRECTION: Bullish, Bearish, or Sideways.
+2. TRADE DECISION: BUY, SELL, or WAIT.
+3. ENTRY ZONE: Give a clear price zone if visible.
+4. STOP LOSS: Explain the logical invalidation level.
+5. TAKE PROFIT: TP1, TP2 and TP3 if identifiable.
+6. MARKET STRUCTURE: Explain BOS or CHoCH.
+7. LIQUIDITY: Identify possible liquidity sweeps.
+8. FVG / ORDER BLOCK: Identify them if visible.
+9. REASON: Explain the evidence from the chart.
+10. RISK WARNING: Explain what could invalidate the setup.
+
+Do not invent prices that cannot be read from the chart.
+If the chart is unclear, say so.
+Never guarantee profits.
+`
+      }
+    ];
+
+    for (const file of req.files) {
+      parts.push({
+        inlineData: {
+          mimeType: file.mimetype,
+          data: file.buffer.toString("base64")
+        }
+      });
+    }
+
+    const result = await gemini(
+      [{ role: "user", parts }],
+      2500
+    );
+
+    const answer =
+      result.candidates?.[0]?.content?.parts
+        ?.map(part => part.text || "")
+        .join("\n") || "No analysis was returned.";
+
+    res.json({
+      success: true,
+      answer,
+      analysis: answer
+    });
+
+  } catch (error) {
+    console.error("Analysis error:", error);
+    res.status(error.status || 500).json({
+      error: error.message || "Chart analysis failed."
+    });
+  }
+});
+
+// AI CHAT
+app.post("/api/chat", async (req, res) => {
+  try {
+    const message = req.body.message;
+
+    if (!message) {
+      return res.status(400).json({
+        error: "Please enter a message."
+      });
+    }
+
+    const result = await gemini(
+      [{
+        role: "user",
+        parts: [{ text: message }]
+      }],
+      1500
+    );
+
+    const reply =
+      result.candidates?.[0]?.content?.parts
+        ?.map(part => part.text || "")
+        .join("\n") || "No response received.";
+
+    res.json({
+      success: true,
+      reply,
+      answer: reply
+    });
+
+  } catch (error) {
+    console.error("Chat error:", error);
+    res.status(error.status || 500).json({
+      error: error.message || "Chat failed."
+    });
+  }
+});
+
+// ERROR HANDLER
+app.use((error, req, res, next) => {
+  console.error("Server error:", error);
+
+  res.status(error.status || 500).json({
+    error: error.message || "Something went wrong."
+  });
+});
+
+// START SERVER
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`TradeLens AI listening on port ${PORT}`);
+});
