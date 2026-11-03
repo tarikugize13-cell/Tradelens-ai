@@ -82,4 +82,7 @@ async function gemini(contents, maxOutputTokens = 1500, systemInstruction) {
     method: "POST",
     headers: {
       "x-goog-api-key": apiKey,
-      "Content
+      "Content-Type": "application/json"
+  },
+  body: JSON.stringify(payload)
+});
