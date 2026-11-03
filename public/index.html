@@ -1,1 +1,46 @@
 
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08111f"><title>TradeLens AI — Forex Trading Workspace</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header class="top"><a class="brand" href="#"><span class="logo">TL</span><span>Trade<span>Lens</span><small>AI FOREX WORKSPACE</small></span></a><div class="topright"><span id="aiStatus" class="badge">AI checking…</span><span id="dataStatus" class="badge">Market data checking…</span></div></header>
+<main class="wrap">
+<section class="hero"><div class="eyebrow">ANALYZE · LEARN · PLAN</div><h1>Trade with a plan,<br><em>not a guess.</em></h1><p>Chart screenshot analysis, a strategy library, live forex quotes and an AI trading tutor — in one mobile-friendly workspace.</p></section>
+<nav class="tabs"><button class="tab active" data-tab="analyze">Chart Analysis</button><button class="tab" data-tab="market">Live Market</button><button class="tab" data-tab="chat">Talk to AI</button><button class="tab" data-tab="learn">Strategies</button></nav>
+<section id="analyze" class="view active">
+<div class="sectionhead"><div><div class="eyebrow">VISION ANALYSIS</div><h2>Upload your chart</h2></div><span class="tag">UP TO 4 IMAGES</span></div>
+<form id="analysisForm">
+<div class="grid2"><label>Forex pair<input name="pair" value="EUR/USD" required></label><label>Timeframe<select name="timeframe"><option>5m</option><option>15m</option><option>1h</option><option>4h</option><option>Daily</option><option>Multiple timeframes</option></select></label></div>
+<label>Strategy to focus on<select name="strategy"><option>Multi-strategy confluence</option><option>SMC / ICT</option><option>Price Action</option><option>Support & Resistance</option><option>Trend Following</option><option>Supply & Demand</option><option>Breakout & Retest</option><option>Moving Averages</option><option>RSI / MACD</option><option>Fibonacci</option><option>Scalping</option><option>Swing Trading</option></select></label>
+<label class="drop" for="charts"><input id="charts" name="charts" type="file" accept="image/*" multiple><span class="plus">＋</span><b>Tap to add chart screenshots</b><small>PNG, JPG or WEBP · max 8MB each</small><span id="fileNames" class="filelist">No images selected</span></label>
+<label>Extra information <small class="muted">OPTIONAL</small><textarea name="notes" rows="3" placeholder="Your market idea, session, key levels, or what you want checked…"></textarea></label>
+<button class="primary" id="analyzeBtn">Analyze chart <b>→</b></button></form>
+<div id="analysisResult" class="output hidden"><div class="outhead"><h3>Chart report</h3><button class="secondary" data-copy="analysisText">Copy</button></div><div id="analysisText" class="answer"></div></div>
+</section>
+<section id="market" class="view">
+<div class="sectionhead"><div><div class="eyebrow">MARKET DATA</div><h2>Live forex market</h2></div><span class="tag">PROVIDER FEED</span></div>
+<div class="grid2"><label>Pair<select id="marketPair"><option>EUR/USD</option><option>GBP/USD</option><option>USD/JPY</option><option>USD/CHF</option><option>AUD/USD</option><option>USD/CAD</option><option>NZD/USD</option><option>EUR/GBP</option><option>EUR/JPY</option><option>XAU/USD</option></select></label><label>Timeframe<select id="marketInterval"><option value="5min">5 minutes</option><option value="15min">15 minutes</option><option value="1h">1 hour</option><option value="4h">4 hours</option><option value="1day">1 day</option></select></label></div>
+<div class="quote"><div><small>LAST QUOTE</small><strong id="quotePrice">—</strong><span id="quoteChange">Connect market data to load quotes</span></div><button id="refreshMarket" class="secondary">Refresh ↻</button></div>
+<div class="tablewrap"><table><thead><tr><th>Time</th><th>Open</th><th>High</th><th>Low</th><th>Close</th></tr></thead><tbody id="candleRows"><tr><td colspan="5">Load live market data to see candles.</td></tr></tbody></table></div><p class="disclaimer">Market data is supplied by the configured provider and may be delayed or subject to plan limits. It is not an execution feed.</p>
+</section>
+<section id="chat" class="view">
+<div class="sectionhead"><div><div class="eyebrow">YOUR TRADING TUTOR</div><h2>Talk to TradeLens</h2></div><span class="tag">AI CHAT</span></div>
+<div id="chatMessages" class="chatbox"><div class="bubble bot">Hey! Ask me about forex, chart patterns, SMC, risk management, trading psychology, or how to use MT5. I can explain step by step.</div></div>
+<form id="chatForm" class="chatform"><textarea id="chatInput" rows="2" placeholder="Ask your trading question…" required></textarea><div class="chattools"><button type="button" id="voiceBtn" class="secondary">🎙 Speak</button><button type="button" id="readBtn" class="secondary">🔊 Read reply</button><button class="primary">Send →</button></div></form><p class="disclaimer">Voice input depends on browser and device support. Chat answers are educational, not guaranteed trade signals.</p>
+</section>
+<section id="learn" class="view">
+<div class="sectionhead"><div><div class="eyebrow">STRATEGY LIBRARY</div><h2>Explore trading methods</h2></div><span class="tag">LEARN THE LOGIC</span></div>
+<div class="strategygrid">
+<article><b>01 · SMC / ICT</b><h3>Structure & liquidity</h3><p>BOS, CHOCH, liquidity sweeps, order blocks, fair value gaps and premium/discount.</p></article>
+<article><b>02 · PRICE ACTION</b><h3>Candlestick reading</h3><p>Rejection, engulfing candles, pin bars, momentum and market context.</p></article>
+<article><b>03 · SUPPORT / RESISTANCE</b><h3>Key price zones</h3><p>Horizontal levels, role reversal, retests and confluence.</p></article>
+<article><b>04 · TREND FOLLOWING</b><h3>Trade with direction</h3><p>Higher highs/lows, lower highs/lows, moving averages and pullbacks.</p></article>
+<article><b>05 · SUPPLY / DEMAND</b><h3>Imbalance zones</h3><p>Identify areas of strong buying or selling and wait for a reaction.</p></article>
+<article><b>06 · BREAKOUT / RETEST</b><h3>Confirmation first</h3><p>Range breaks, false breaks, retest quality and invalidation.</p></article>
+<article><b>07 · INDICATORS</b><h3>RSI, MACD & averages</h3><p>Momentum, divergence, crossovers and why indicators lag.</p></article>
+<article><b>08 · FIBONACCI</b><h3>Retracement & extension</h3><p>Use fib levels as confluence, not as standalone predictions.</p></article>
+<article><b>09 · SCALPING / SWING</b><h3>Timeframe planning</h3><p>Entry timeframe, higher-timeframe bias, session and holding period.</p></article>
+<article><b>10 · RISK MANAGEMENT</b><h3>Protect the account</h3><p>Position sizing, stop placement, risk/reward, drawdown and journaling.</p></article>
+</div>
+</section>
+</main>
+<footer><b>TradeLens AI</b><span>Educational platform · Forex involves substantial risk</span></footer><script src="/app.js"></script></body></html>
